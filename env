@@ -1,0 +1,10 @@
+DB_NAME=db_name
+
+DB_USER=db_user
+
+DB_PASS=password
+
+SECRET_KEY=
+
+DEBUG=1
+
