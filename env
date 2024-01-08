@@ -2,9 +2,9 @@ DB_NAME=db_name
 
 DB_USER=db_user
 
-DB_PASS=password
+DB_PASS=user_password
 
-SECRET_KEY=
+SECRET_KEY=secret_key
 
 DEBUG=1
 
