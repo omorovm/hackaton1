@@ -7,6 +7,12 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.models import User 
 
 
+from resume.models import Resume
+from resume.serializers import ResumeSerializer
+from resume.permissions import IsOwnerOrReadOnly
+
+
+
 class UserRegistration(APIView):
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)

@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate
 class RegisterSerializer(serializers.ModelSerializer):
     first_name=serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
+    email = serializers.CharField(required=True)
+    # citizenship = serializers.CharField(required=True)
     password = serializers.CharField(required=True, min_length=8, write_only=True)
     password_confirmation = serializers.CharField(required=True, min_length=8, write_only=True)
 
