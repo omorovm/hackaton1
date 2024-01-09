@@ -6,5 +6,6 @@ class JobSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Job
-        fields = ['title', 'description', 'owner', 'location', 'salary', 'posted_date']
+        # fields = '__all__'
+        fields = ['id' ,'title', 'description', 'owner', 'location', 'salary', 'posted_date']
 
