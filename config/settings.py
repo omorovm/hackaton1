@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'job',
     'resume',
     'chat',
+    'favorite',
 ]
 
 MIDDLEWARE = [
