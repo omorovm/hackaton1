@@ -28,7 +28,7 @@ class LoginView(ObtainAuthToken):
     #     serializer = FavoriteSerializer(favorite, many=True)
     #     if serializer.data:
     #         return Response(serializer.data, 200)
-    #     return Response('Нет избранных постов',204)
+    #     return Response('Нет избранных вакансий',204)
     
     def post(self, request):
         serializer = self.serializer_class(data=request.data, context={'request':request})
