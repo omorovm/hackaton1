@@ -21,13 +21,6 @@ class JobViewSet(viewsets.ModelViewSet):
     search_fields = ['title', 'location']
     filterset_fields = ['description']
 
-    # def get(self, request):
-    #     rating = Rating.objects.filter(owner=request.user).all()
-    #     serializer = FavoriteSerializer(favorite, many=True)
-    #     if serializer.data:
-    #         return Response(serializer.data, 200)
-    #     return Response('Нет избранных вакансий',204)
-    
 
     def get_permissions(self):
         if self.request.method in ['PATCH', 'PUT', 'DELETE']:
@@ -43,13 +36,13 @@ class JobViewSet(viewsets.ModelViewSet):
         rating = request.user.ratings.filter(job=job)
         if favorite:
             favorite.delete()
-            return Response('удалено из избранных', 204)
+            return Response('вы удaлили отзыв которого оставили не давно', 204)
         favorite = Favorite.objects.create(
             job=job,
             owner=request.user,
             value = request.value
         )
-        return Response('добавлено в избранное', 201)
+        return Response('вы оставили отзыв на данную вакансию', 201)
 
     @action(detail=True, methods=['POST'])
     def toggle_like(self, request, pk=None):
@@ -57,12 +50,12 @@ class JobViewSet(viewsets.ModelViewSet):
         like = request.user.likes.filter(job=job)
         if like:
             like.delete()
-            return Response('успешно удалено', 204)
+            return Response('вы удалили лайк', 204)
         like = Like.objects.create(
             job=job,
             owner=request.user
         )
-        return Response('успешно добавлено', 201)
+        return Response('вы добавили лайк', 201)
 
     @action(detail=True, methods=['POST'])
     def toggle_favorite(self, request, pk=None):

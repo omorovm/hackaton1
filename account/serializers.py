@@ -3,16 +3,20 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 
 class RegisterSerializer(serializers.ModelSerializer):
+    USER_CHOICES = [
+        (1, 'Я ищу работу'),
+        (0, 'Я ищу сотрудника')
+    ]
     first_name=serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     email = serializers.CharField(required=True)
-    # citizenship = serializers.CharField(required=True)
+    i_am = serializers.ChoiceField(required=True, choices=USER_CHOICES)
     password = serializers.CharField(required=True, min_length=8, write_only=True)
     password_confirmation = serializers.CharField(required=True, min_length=8, write_only=True)
 
     class Meta:
         model=User
-        fields=['username', 'email', 'first_name', 'last_name', 'password', 'password_confirmation']
+        fields=['username', 'email', 'first_name', 'i_am', 'last_name', 'password', 'password_confirmation']
 
     
     def validate(self, attrs):
@@ -66,5 +70,9 @@ class LoginSerializer(serializers.Serializer):
         return username
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = '__all__'
         model = User
+        a = User.objects.filter(i_am=1).all()
+        if a == 1:
+            fields = '__all__'
+        else:
+            fields = ['first_name', 'last_name']

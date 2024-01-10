@@ -15,7 +15,14 @@ class Favorite(models.Model):
     )
 
 class Rating(models.Model):
-    value = models.IntegerField()
+    RATING_CHOICES = (
+        (1, 'очень плохо'),
+        (2, 'не очень'),
+        (3, 'нормально'),
+        (4, 'отлично'),
+        (5, 'супер')
+    )
+    value = models.IntegerField(choices=RATING_CHOICES)
     job = models.ForeignKey(
         Job,
         related_name='ratings',

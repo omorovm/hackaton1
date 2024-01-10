@@ -6,7 +6,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.contrib.auth.models import User 
 
-
+from  favorite.models import Favorite
+from favorite.serializer import FavoriteSerializer
 from resume.models import Resume
 from resume.serializers import ResumeSerializer
 from resume.permissions import IsOwnerOrReadOnly
@@ -23,12 +24,12 @@ class UserRegistration(APIView):
 class LoginView(ObtainAuthToken):
     serializer_class = LoginSerializer
 
-    # def get(self, request):
-    #     favorite = Favorite.objects.filter(owner=request.user).all()
-    #     serializer = FavoriteSerializer(favorite, many=True)
-    #     if serializer.data:
-    #         return Response(serializer.data, 200)
-    #     return Response('Нет избранных вакансий',204)
+    def get(self, request):
+        favorite = Favorite.objects.filter(owner=request.user).all()
+        serializer = FavoriteSerializer(favorite, many=True)
+        if serializer.data:
+            return Response(serializer.data, 200)
+        return Response('Нет избранных вакансий',204)
     
     def post(self, request):
         serializer = self.serializer_class(data=request.data, context={'request':request})
