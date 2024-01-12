@@ -13,3 +13,11 @@ PyYAML
 sqlparse
 typing_extensions
 uritemplate
+celery
+djangorestframework-simplejwt
+PyJWT
+python-slugify
+redis
+requests
+slugify
+sqlparse
