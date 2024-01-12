@@ -14,3 +14,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Instance must have an attribute named `owner`.
         return obj.user == request.user
+
+class IsStuff(permissions.BasePermission):
+    message = "You are not allowed to access this resource."
+
+    def has_permission(self, request, view):
+        return bool(request.user and request.user.is_staff)

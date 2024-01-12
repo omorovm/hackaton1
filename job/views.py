@@ -34,10 +34,10 @@ class JobViewSet(viewsets.ModelViewSet):
     def toggle_rating(self, request, pk=None):
         job = self.get_object()
         rating = request.user.ratings.filter(job=job)
-        if favorite:
-            favorite.delete()
+        if rating:
+            rating.delete()
             return Response('вы удaлили отзыв которого оставили не давно', 204)
-        favorite = Favorite.objects.create(
+        rating = Rating.objects.create(
             job=job,
             owner=request.user,
             value = request.value

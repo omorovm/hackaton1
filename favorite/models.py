@@ -1,4 +1,5 @@
 from django.db import models
+from account.models import User
 from job.models import Job
 
 # Create your models here.
@@ -9,7 +10,7 @@ class Favorite(models.Model):
         on_delete=models.CASCADE
     )
     owner = models.ForeignKey(
-        'auth.User',
+        User,
         related_name='favorites',
         on_delete=models.CASCADE
     )
@@ -29,7 +30,7 @@ class Rating(models.Model):
         on_delete=models.CASCADE
     )
     owner = models.ForeignKey(
-        'auth.User',
+        User,
         related_name='ratings',
         on_delete=models.CASCADE
     )
@@ -41,7 +42,7 @@ class Like(models.Model):
         on_delete=models.CASCADE
     )
     owner = models.ForeignKey(
-        'auth.User',
+        User,
         related_name='likes',
         on_delete=models.CASCADE
     )
