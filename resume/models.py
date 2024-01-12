@@ -1,16 +1,42 @@
 from django.db import models
-from account.models import User
+from django.contrib.auth import get_user_model
+from job.models import Job
+
+
+User = get_user_model()
+
 
 class Resume(models.Model):
-    title = models.CharField(max_length=255)
-    summary = models.TextField()
-    skills = models.TextField()
-    experience = models.TextField()
-    education = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='images/', null=True)
-    owner = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE, 
-        related_name='resume'
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='resume')
+    specializations = [
+        ('Front-end разработка', 'Front-end разработка'),
+        ('Back-end разработка', 'Back-end разработка'),
+        ('Мобильная разработка', 'Мобильная разработка'),
+        ('Data science', 'Data science'),
+        ('UX/UI дизайн', 'UX/UI дизайн')
+    ]
+    specialization = models.CharField(max_length=45, choices=specializations)
+    sex_choice = [
+        ('f', 'female'),
+        ('m', 'male')
+    ]
+    sex = models.CharField(max_length=1, choices=sex_choice)
+    city_of_residence = models.CharField(max_length=50, verbose_name='Город проживания')
+    date_of_birth = models.DateField(verbose_name='Дата рождения')
+    phone_number = models.CharField(max_length=13, verbose_name='Номер телефона')
+    citizenship = models.CharField(max_length=30)
+    profile_photo = models.ImageField(width_field=354, height_field=472, upload_to='profile', blank=True)
+    skills = models.TextField(verbose_name='Навыки, скиллы')
+    cover_letter = models.TextField(verbose_name='Сопроводительное письмо')
+    education_choice = [
+        ('Среднее', 'Среднее'),
+        ('Среднее специальное', 'Среднее специальное'),
+        ('Неоконченное высшее', 'Неоконченное высшее'),
+        ('Высшее', 'Высшее'),
+        ('Бакалавр', 'Бакалавр'),
+        ('Магистр', 'Магистр'),
+        ('Кандидат наук', 'Кандидат наук'),
+        ('Доктор наук', 'Доктор наук'),
+    ]
+    education = models.CharField(max_length=20, choices=education_choice, verbose_name='Уровень образования')
+    expected_salary = models.CharField(max_length=5, blank=True)
