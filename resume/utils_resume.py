@@ -19,14 +19,12 @@ def send_resume_data(email, resume):
 
     }
 
-    msg_html = render_to_string('resume.html', context)
-    message = strip_tags(msg_html)
+    message = render_to_string('text_resume.txt', context)
     send_mail(
         'Резюме',
         message,
         'test@gmail.com',
         [email],
-        html_message=msg_html,
         fail_silently=False,
     )
 
