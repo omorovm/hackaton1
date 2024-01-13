@@ -75,7 +75,7 @@ class ForgotPasswordCompleteSerializer(serializers.Serializer):
 
 class BecomeEmployerSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
-    password = serializers.CharField(max_length=5, required=True, write_only=True)
+    password = serializers.CharField(max_length=20, required=True, write_only=True)
 
     class Meta:
         model = User
