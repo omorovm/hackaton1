@@ -1,13 +1,18 @@
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 # from .models import User
 from django.contrib.auth import get_user_model
 
 
 def send_recovery_code(email, recovery_code):
     User = get_user_model()
-    user = User.objects.get(email=email)
+
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        # Обработка случая, когда пользователя нет
+        return
+
     first_name = user.first_name
 
     context = {
@@ -18,14 +23,14 @@ def send_recovery_code(email, recovery_code):
 
     }
 
-    msg_html = render_to_string('forgot_pass.html', context)
-    message = strip_tags(msg_html)
+    message = render_to_string('text_pass.txt', context)
+    
     send_mail(
         'Восстановление пароля',
         message,
         'test@gmail.com',
         [email],
-        html_message=msg_html,
         fail_silently=False,
     )
+    print(recovery_code)
 

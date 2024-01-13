@@ -34,7 +34,7 @@ class ActivationView(APIView):
 
 
 class ForgotPasswordView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def post(self, request):
         serializer = ForgotPasswordSerializer(data=request.data)
@@ -44,7 +44,7 @@ class ForgotPasswordView(APIView):
 
 
 class ForgotPasswordCompleteView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def post(self, request):
         serializer = ForgotPasswordCompleteSerializer(data=request.data)
