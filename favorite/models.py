@@ -1,19 +1,23 @@
 from django.db import models
-from account.models import User
+from django.contrib.auth import get_user_model
 from job.models import Job
+
+User = get_user_model()
 
 # Create your models here.
 class Favorite(models.Model):
-    job = models.ForeignKey(
+    favorite_job = models.ForeignKey(
         Job,
-        related_name='favorites',
+        related_name='favorite_job',
         on_delete=models.CASCADE
     )
-    owner = models.ForeignKey(
+    user = models.ForeignKey(
         User,
-        related_name='favorites',
+        related_name='favorite',
         on_delete=models.CASCADE
     )
+    class Meta:
+        unique_together = ['user', 'favorite_job']
 
 class Rating(models.Model):
     RATING_CHOICES = (
@@ -24,25 +28,13 @@ class Rating(models.Model):
         (5, 'супер')
     )
     value = models.IntegerField(choices=RATING_CHOICES)
-    job = models.ForeignKey(
+    rating_job = models.ForeignKey(
         Job,
         related_name='ratings',
         on_delete=models.CASCADE
     )
-    owner = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         related_name='ratings',
-        on_delete=models.CASCADE
-    )
-
-class Like(models.Model):
-    job = models.ForeignKey(
-        Job,
-        related_name='likes',
-        on_delete=models.CASCADE
-    )
-    owner = models.ForeignKey(
-        User,
-        related_name='likes',
         on_delete=models.CASCADE
     )
