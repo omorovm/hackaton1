@@ -32,7 +32,7 @@ class ResumeView(APIView):
         serializer = ResumeSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        return Response('Ваше резюме успешно размещено на сайте! Проверьте почту')
+        return Response('Ваше резюме успешно размещено на сайте!')
 
     def get(self, request):
         users_resume = Resume.objects.filter(user=request.user)

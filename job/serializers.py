@@ -42,7 +42,7 @@ class ApplyToJobSerializer(Serializer):
 class EmployerResumeSerializer(ModelSerializer):
     class Meta:
         model = Resume
-        exclude = ['applied_jobs']
+        fields = '__all__'
 
 
 class UpdateResumeStatusSerializer(Serializer):

@@ -33,7 +33,6 @@ class ResumeSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         user_data = representation.pop('user')
-        representation.update(user_data)
         return representation
     
     def validate_specialization(self, value):
