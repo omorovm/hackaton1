@@ -8,12 +8,6 @@ from resume.models import Resume
 User = get_user_model()
 
 
-# class UserSerializer(ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ['id', 'first_name', 'last_name', 'email']
-
-
 class JobSerializer(ModelSerializer):
     who_created = ReadOnlyField(source='user')
     title = CharField(max_length=50)
