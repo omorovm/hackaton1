@@ -8,7 +8,7 @@ class IsEmployer(BasePermission):
         return True
 
     def has_object_permission(self, request, view, obj):
-        if request.method in ['UPDATE', 'DELETE']:
+        if request.method in ['PUT', 'PUTCH', 'DELETE']:
             return request.user == obj.who_created
         return True
 

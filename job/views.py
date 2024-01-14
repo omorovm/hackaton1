@@ -40,17 +40,12 @@ class JobViewSet(PermissionMixin, ModelViewSet):
 
 class ApplyToJobView(APIView):
     permission_classes = [IsAuthenticated]
-
     def post(self, request, *args, **kwargs):
-        # print("ApplyToJobView is called.")
-        # print(request.data)
-
-        serializer = ApplyToJobSerializer(data=request.data)
+        # print("Application successful.")
+        serializer = ApplyToJobSerializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
-
         slug = slugify(str(serializer.validated_data['slug']))
         # print(f"Trying to get vacancy with slug: {slug}")
-
         try:
             job = Job.objects.get(slug=slug)
         except Job.DoesNotExist:
@@ -59,12 +54,9 @@ class ApplyToJobView(APIView):
         resume = get_object_or_404(Resume, user=request.user)
 
         job.applicants.add(request.user)
-        resume.applied_vacancies.add(job)
+        resume.applied_jobs.add(job)
         send_about_resume(job.who_created.email)
-
-        print("Application successful.")
         return Response('Ваше резюме успешно подано, ожидайте обратной связи от работодателя')
-
 
 class EmployerGetResumeView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsEmployer]
@@ -73,7 +65,6 @@ class EmployerGetResumeView(generics.ListAPIView):
     def get_queryset(self):
         slug = self.kwargs.get('slug')
         job = get_object_or_404(Job, slug=slug)
-
         # Получаем связанные резюме через таблицу промежуточных связей
         resumes = Resume.objects.filter(applied_jobs=job)
 
