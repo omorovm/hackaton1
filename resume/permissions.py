@@ -19,4 +19,4 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class IsOwner(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         # Разрешить только владельцу объекта редактирование, остальным - только чтение
-        return request.user == obj.username
+        return request.user == obj.user
