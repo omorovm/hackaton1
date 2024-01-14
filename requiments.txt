@@ -21,3 +21,4 @@ redis
 requests
 slugify
 sqlparse
+django-redis

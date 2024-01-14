@@ -42,7 +42,7 @@ class ApplyToJobView(APIView):
     permission_classes = [IsAuthenticated]
     def post(self, request, *args, **kwargs):
         # print("Application successful.")
-        serializer = ApplyToJobSerializer(data=request.data)
+        serializer = ApplyToJobSerializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
         slug = slugify(str(serializer.validated_data['slug']))
         # print(f"Trying to get vacancy with slug: {slug}")
