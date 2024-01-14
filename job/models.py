@@ -12,7 +12,7 @@ class Job(models.Model):
     company_title = models.CharField(max_length=20, verbose_name='Название компании')
     company_descr = models.TextField(verbose_name='Описание компании')
     salary = models.CharField(max_length=7, verbose_name='Зарплата')
-    who_created = models.ForeignKey(User, related_name='vacancy', on_delete=models.CASCADE,
+    who_created = models.ForeignKey(User, related_name='job', on_delete=models.CASCADE,
                                     verbose_name='Представитель компании')
     requirements = models.TextField(verbose_name='Требования')
     experience = models.CharField(max_length=20, verbose_name='Требуемый опыт')

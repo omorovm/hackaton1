@@ -14,6 +14,8 @@ from django.contrib.auth import get_user_model
 from .models import Job
 from rest_framework.exceptions import NotFound
 from slugify import slugify
+from rest_framework.decorators import action
+from favorite.models import Rating
 
 User = get_user_model()
 
@@ -40,23 +42,28 @@ class JobViewSet(PermissionMixin, ModelViewSet):
 
 class ApplyToJobView(APIView):
     permission_classes = [IsAuthenticated]
+
     def post(self, request, *args, **kwargs):
-        # print("Application successful.")
-        serializer = ApplyToJobSerializer(data=request.data)
+        serializer = ApplyToJobSerializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
-        slug = slugify(str(serializer.validated_data['slug']))
-        # print(f"Trying to get vacancy with slug: {slug}")
-        try:
-            job = Job.objects.get(slug=slug)
-        except Job.DoesNotExist:
-            raise NotFound('Такой вакансии не существует')
 
-        resume = get_object_or_404(Resume, user=request.user)
+        for data in serializer.validated_data:
+            slug = slugify(str(data['slug']))
+            try:
+                job = Job.objects.get(slug=slug)
+            except Job.DoesNotExist:
+                raise NotFound('Такой вакансии не существует')
 
-        job.applicants.add(request.user)
-        resume.applied_jobs.add(job)
-        send_about_resume(job.who_created.email)
-        return Response('Ваше резюме успешно подано, ожидайте обратной связи от работодателя')
+            resume = get_object_or_404(Resume, user=request.user)
+
+            job.applicants.add(request.user)
+            resume.applied_vacancies.add(job)
+            send_about_resume(job.who_created.email)
+
+        print("Application successful.")
+        return Response('Ваши резюме успешно поданы, ожидайте обратной связи от работодателя')
+
+
 
 class EmployerGetResumeView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsEmployer]
