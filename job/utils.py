@@ -15,7 +15,7 @@ def send_about_resume(email):
 
     }
 
-    message = render_to_string('about_resume.html', context)
+    message = render_to_string('text_respond.txt', context)
     
     send_mail(
         'Пришел отклик на вакансию',

@@ -38,6 +38,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path('job/', include('job.urls')),
     path('resume/', include('resume.urls')),
+    path('favorite/', include('favorite.urls')),
     # libs
     path('swagger/', schema_view.with_ui("swagger")),
     path('redoc/', schema_view.with_ui("redoc")),
