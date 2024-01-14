@@ -19,18 +19,10 @@ class StandartResultPagination(PageNumberPagination):
 
 
 class ResumeView(APIView):
-    pagination_class = StandartResultPagination
+    permission_classes = [IsAuthenticated, IsOwner]
 
-    def get_permissions(self):
-        if self.request.method in ['PATCH', 'PUT', 'DELETE']:
-            return [permissions.IsAdminUser(), IsOwner()]
-        return [permissions.IsAuthenticated()]
-    
-    
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
-            specialization = serializer.validated_data.get('specialization')
-            self.validate_specialization(specialization)
             serializer.save(user=self.request.user)
         else:
             raise ValidationError('Пользователь не аутентифицирован')
@@ -44,13 +36,6 @@ class ResumeView(APIView):
 
     def get(self, request):
         users_resume = Resume.objects.filter(user=request.user)
-        # Выполняем пагинацию
-        page = self.paginate_queryset(users_resume)
-
-        if page is not None:
-            serializer = ResumeSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = ResumeSerializer(users_resume, many=True)
         return Response(serializer.data)
     
@@ -58,7 +43,7 @@ class ResumeView(APIView):
 class ResumeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Resume.objects.all()
     serializer_class = ResumeSerializer
-    permission_classes = [IsAuthenticated, IsOwner]
+    # permission_classes = [IsAuthenticated, IsOwner]
 
     def get_permissions(self):
         if self.request.method in ['PATCH', 'PUT', 'DELETE']:
