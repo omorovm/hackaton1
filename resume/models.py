@@ -40,7 +40,7 @@ class Resume(models.Model):
     ]
     education = models.CharField(max_length=20, choices=education_choice, verbose_name='Уровень образования')
     expected_salary = models.CharField(max_length=5, blank=True)
-    applied_vacancies = models.ManyToManyField(Job, related_name='applicants_resumes', blank=True)
+    applied_jobs = models.ManyToManyField(Job, related_name='applicants_resumes', blank=True)
     statuses = [
         ('viewed', 'Просмотрено'),
         ('rejected', 'Отказано'),

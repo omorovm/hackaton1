@@ -1,15 +1,18 @@
 from rest_framework import serializers
 from .models import Favorite
+from job.models import Job
 
 
-class FavoriteSerializer(serializers.Serializer):
-    owner = serializers.ReadOnlyField(source='owner.username')
-    job = serializers.ReadOnlyField(source='job.title')
+class FavoriteJobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Job
+        fields = ['title', 'requirements']
+
+
+class FavoritesSerializer(serializers.ModelSerializer):
+    job_title = serializers.CharField(source='favorite_job.title', read_only=True)
+    job_resp = serializers.CharField(source='favorite_job.responsibilities', read_only=True)
 
     class Meta:
-        fields = '__all__'
         model = Favorite
-    
-    def to_representation(self, instance):
-        repr = super().to_representation(instance)
-        return repr['job']
+        fields = ['job_title', 'job_resp']
