@@ -3,8 +3,8 @@ from .models import Job
 from django.contrib.auth import get_user_model
 from slugify import slugify
 from resume.models import Resume
-
-
+from django.db.models import Avg
+from favorite.models import Rating
 User = get_user_model()
 
 
@@ -20,6 +20,23 @@ class JobSerializer(ModelSerializer):
         user = self.context['request'].user
         validated_data['who_created'] = user
         return super(JobSerializer, self).create(validated_data)
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        
+        # Получение рейтингов для каждой вакансии
+        ratings = instance.ratings.all()
+        average_rating = ratings.aggregate(Avg('value'))['value__avg']
+
+        # Добавление рейтингов к представлению
+        representation['ratings'] = {
+            'средний рейтинг': average_rating,
+            'общие рейтинги': len(ratings),
+            'индивидуальные_рейтинги': [rating.value for rating in ratings]
+        }
+
+        return representation
+
 
 
 class ApplyToJobSerializer(Serializer):

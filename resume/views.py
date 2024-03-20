@@ -43,9 +43,8 @@ class ResumeView(APIView):
 class ResumeDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Resume.objects.all()
     serializer_class = ResumeSerializer
-    # permission_classes = [IsAuthenticated, IsOwner]
 
     def get_permissions(self):
         if self.request.method in ['PATCH', 'PUT', 'DELETE']:
-            return [permissions.IsAdminUser(), IsOwner()]
+            return [permissions.OR(permissions.IsAdminUser(), IsOwner())]
         return [permissions.IsAuthenticated()]
